@@ -42,9 +42,26 @@ def criar_livro():
         db.session.commit()
         return gera_response(201, "livro", livro.to_json(), "Livro criado com sucesso")
     except Exception as e:
-        print(e)
+        print(f'Erro: {e}')
         return gera_response(400, "livro", {}, "Erro ao cadastrar o livro")
 
+@app.route("/livro/<id>", methods=["PUT"])
+def atualizar_livro(id):
+    body = request.get_json()
+
+    try:
+        livro_objeto = Livros.query.filter_by(id=id).first()
+        if 'titulo' in body:
+            livro_objeto.titulo = body["titulo"]
+        if 'autor' in body:
+            livro_objeto.autor = body["autor"]
+
+        db.session.add(livro_objeto)
+        db.session.commit()
+        return gera_response(200, "livro", livro_objeto.to_json(), "Livro atualizado com sucesso")
+    except Exception as e:
+        print(f'Erro: {e}')
+        return gera_response(400, "livro", {}, "Erro ao atualizar livro")
 
 def gera_response(status, nome_conteudo, conteudo, mensagem=False):
     body = {}
