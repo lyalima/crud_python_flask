@@ -32,6 +32,19 @@ def selecionar_livro(id):
     livro_json = livro_objeto.to_json()
     return gera_response(200, "livro", livro_json)
 
+@app.route("/livro", methods=["POST"])
+def criar_livro():
+    body = request.get_json()
+
+    try:
+        livro = Livros(titulo=body["titulo"], autor=body["autor"])
+        db.session.add(livro)
+        db.session.commit()
+        return gera_response(201, "livro", livro.to_json(), "Livro criado com sucesso")
+    except Exception as e:
+        print(e)
+        return gera_response(400, "livro", {}, "Erro ao cadastrar o livro")
+
 
 def gera_response(status, nome_conteudo, conteudo, mensagem=False):
     body = {}
