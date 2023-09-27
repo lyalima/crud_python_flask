@@ -62,6 +62,18 @@ def atualizar_livro(id):
     except Exception as e:
         print(f'Erro: {e}')
         return gera_response(400, "livro", {}, "Erro ao atualizar livro")
+    
+@app.route("/livro/<id>", methods=["DELETE"])
+def deletar_livro(id):
+    livro_objeto = Livros.query.filter_by(id=id).first()
+
+    try:
+        db.session.delete(livro_objeto)
+        db.session.commit()
+        return gera_response(200, "livro", livro_objeto.to_json(), "Livro detelado com sucesso")
+    except Exception as e:
+        print(f'Erro: {e}')
+        return gera_response(400, "livro", {}, "Erro ao deletar livro")
 
 def gera_response(status, nome_conteudo, conteudo, mensagem=False):
     body = {}
