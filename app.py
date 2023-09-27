@@ -26,6 +26,13 @@ def selecionar_livros():
     livros_json = [livro.to_json() for livro in livros_objetos]
     return gera_response(200, "livros", livros_json, "ok")
 
+@app.route("/livro/<id>", methods=["GET"])
+def selecionar_livro(id):
+    livro_objeto = Livros.query.filter_by(id=id).first()
+    livro_json = livro_objeto.to_json()
+    return gera_response(200, "livro", livro_json)
+
+
 def gera_response(status, nome_conteudo, conteudo, mensagem=False):
     body = {}
     body[nome_conteudo] = conteudo
