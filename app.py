@@ -1,22 +1,15 @@
-#instalação das libs necessárias:
-#pip install flask
-#pip install -U Flask-SQLAlchemy
-#pip install mysql-python
-#pip install mysql-connector-python
-#pip install mysqlclient==1.4.6
-
-#importação das libs necessárias
 from flask import Flask, Response, request
 from flask_sqlalchemy import SQLAlchemy
 import mysql.connector 
 import json
+
 
 #criação do app flask
 app = Flask(__name__)
 app.app_context().push()
 #configuração do banco de dados(já deve estar criado)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://teste:AbCd!12345@localhost/teste'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://teste:AbCd!12345@localhost/teste'
 db = SQLAlchemy(app)
 
 #criação da classe que será a tabela do banco de dados
